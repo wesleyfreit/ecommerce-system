@@ -1,0 +1,4 @@
+# Envoironment variables
+.venv/
+.env
+__pycache__/
