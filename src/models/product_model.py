@@ -1,9 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
+from db.instance import db
 from sqlalchemy import UUID
 import uuid
-
-
-db = SQLAlchemy()
 
 
 class Product(db.Model):

@@ -1,26 +1,10 @@
-from flask import request, jsonify
-from db.migrations import db, Product
+from flask import jsonify, request
+from db.instance import db
+from models.product_model import Product
 
 
-def product_routes(app):
-    @app.route("/api/products", methods=["POST"])
-    def add_product():
-        data = request.json
-
-        if "name" in data and "price" in data:
-            product = Product(
-                name=data["name"],
-                price=data["price"],
-                description=data.get("description", ""),
-            )
-
-            db.session.add(product)
-            db.session.commit()
-            return jsonify({"id": product.id}), 201
-        return jsonify({"error": "Invalid product data"}), 400
-
-    @app.route("/api/products", methods=["GET"])
-    def get_products():
+class ProductController:
+    def get(self):
         products = Product.query.all()
 
         if products:
@@ -38,11 +22,25 @@ def product_routes(app):
                     }
                     for product in products
                 ]
-            })
+                })
         return jsonify({"products": []})
 
-    @app.route("/api/products/<uuid:id>", methods=["GET"])
-    def get_product(id):
+    def add(self):
+        data = request.json
+
+        if "name" in data and "price" in data:
+            product = Product(
+                name=data["name"],
+                price=data["price"],
+                description=data.get("description", ""),
+            )
+
+            db.session.add(product)
+            db.session.commit()
+            return jsonify({"id": product.id}), 201
+        return jsonify({"error": "Invalid product data"}), 400
+
+    def find(self, id):
         product = Product.query.get(id)
 
         if product:
@@ -60,8 +58,7 @@ def product_routes(app):
             })
         return jsonify({"error": "Product not found"}), 404
 
-    @app.route("/api/products/<uuid:id>", methods=["PUT"])
-    def update_product(id):
+    def update(self, id):
         product = Product.query.get(id)
 
         if not product:
@@ -81,8 +78,7 @@ def product_routes(app):
 
         return jsonify(), 204
 
-    @app.route("/api/products/<uuid:id>", methods=["DELETE"])
-    def delete_product(id):
+    def delete(self, id):
         product = Product.query.get(id)
 
         if product:
