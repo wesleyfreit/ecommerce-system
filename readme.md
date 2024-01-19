@@ -10,7 +10,7 @@
 
 **1. Create a virtual environment:**
  ```bash
- python -m venv .venv
+ py -m venv .venv
  ```
 
 **2. Close the current terminal and open another.**
@@ -24,11 +24,11 @@
  **4. Create database migrations**
 
  ```bash
- python src/_persist.py
+ py src/_persist.py
  ```
 
  **5. Run the project:**
 
  ```bash
- python src/app.py  
+ py src/app.py  
  ```
