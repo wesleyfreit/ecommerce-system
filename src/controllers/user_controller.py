@@ -1,7 +1,7 @@
-import re
 from flask import jsonify, request
 from db.instance import db
 from models.user_model import User
+from flask_login import login_user
 
 
 class UserController:
@@ -23,3 +23,18 @@ class UserController:
             db.session.commit()
             return jsonify({"info": "User created"}), 201
         return jsonify({"error": "Invalid user data"}), 400
+
+    def login(self):
+        data = request.json
+
+        user = User.query.filter_by(username=data["username"]).first()
+
+        if user:
+            if data.get("password") == user.password:
+                login_user(user)
+                return jsonify({"info": "User logged in"})
+        return jsonify({"error": "Invalid credentials"}), 401
+
+    def find(self, id):
+        user = User.query.get(id)
+        return user
