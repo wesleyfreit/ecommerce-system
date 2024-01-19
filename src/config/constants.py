@@ -3,4 +3,4 @@ import os
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
