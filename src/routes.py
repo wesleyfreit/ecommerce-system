@@ -19,16 +19,44 @@ def product_routes(app):
             return jsonify({"id": product.id}), 201
         return jsonify({"error": "Invalid product data"}), 400
 
+    @app.route("/api/products", methods=["GET"])
+    def get_products():
+        products = Product.query.all()
+
+        if products:
+            return jsonify({
+                "products": [
+                    {
+                        "id": product.id,
+                        "name": product.name,
+                        "price": product.price,
+                        **(
+                            {"description": product.description}
+                            if product.description
+                            else {}
+                        ),
+                    }
+                    for product in products
+                ]
+            })
+        return jsonify({"products": []})
+
     @app.route("/api/products/<uuid:id>", methods=["GET"])
     def get_product(id):
         product = Product.query.get(id)
 
         if product:
             return jsonify({
-                "id": product.id,
-                "name": product.name,
-                "price": product.price,
-                "description": product.description,
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    **(
+                        {"description": product.description}
+                        if product.description
+                        else {}
+                    ),
+                }
             })
         return jsonify({"error": "Product not found"}), 404
 
