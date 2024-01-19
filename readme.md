@@ -9,25 +9,31 @@
 ## 🚀 Quick Start
 
 **1. Create a virtual environment:**
- ```bash
- py -m venv .venv
- ```
+```bash
+py -m venv .venv
+```
 
 **2. Close the current terminal and open another.**
 
 **3. Install the project dependencies:**
 
- ```bash
- pip3 install -r .\requirements.txt  
- ```
+```bash
+pip3 install -r .\requirements.txt  
+```
 
- **4. Create database migrations**
+**4. Persist models in the database:**
 
- ```bash
- py src/_persist.py
- ```
+```bash
+py src/_persist.py
+```
 
- **5. Run the project:**
+**5. Persist migration in the database:**
+
+```bash
+py src/_migration.py
+```
+
+ **6. Run the project:**
 
  ```bash
  py src/app.py  
