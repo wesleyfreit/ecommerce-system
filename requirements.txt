@@ -1,4 +1,5 @@
 Flask==2.3.0 # for web framework
+Flask-Cors==3.0.10 # for cross origin requests
 Flask-SQLAlchemy==3.1.1 # for database
-Python-Dotenv==1.0.0 # for .env file
 Psycopg2-Binary==2.9.9 # for postgresql
+Python-Dotenv==1.0.0 # for .env file
