@@ -1,7 +1,9 @@
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, logout_user
 from flask import jsonify, request
+
 from db.instance import db
 from models.user_model import User
-from flask_login import login_user, logout_user
 
 
 class UserController:
@@ -14,9 +16,11 @@ class UserController:
             if user:
                 return jsonify({"error": "User already exists"}), 400
 
+            password_hash = generate_password_hash(data["password"])
+
             user = User(
                 username=data["username"],
-                password=data["password"],
+                password=password_hash,
             )
 
             db.session.add(user)
@@ -30,7 +34,10 @@ class UserController:
         user = User.query.filter_by(username=data["username"]).first()
 
         if user:
-            if data.get("password") == user.password:
+            password = data.get("password")
+            password_hash = user.password
+
+            if check_password_hash(password_hash, password):
                 login_user(user)
                 return jsonify({"info": "User logged in"})
         return jsonify({"error": "Invalid credentials"}), 401
