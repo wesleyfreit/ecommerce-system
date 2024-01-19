@@ -32,6 +32,27 @@ def product_routes(app):
             })
         return jsonify({"error": "Product not found"}), 404
 
+    @app.route("/api/products/<uuid:id>", methods=["PUT"])
+    def update_product(id):
+        product = Product.query.get(id)
+
+        if not product:
+            return jsonify({"error": "Product not found"}), 404
+
+        data = request.json
+        if "name" in data:
+            product.name = data["name"]
+
+        if "price" in data:
+            product.price = data["price"]
+
+        if "description" in data:
+            product.description = data["description"]
+
+        db.session.commit()
+
+        return jsonify(), 204
+
     @app.route("/api/products/<uuid:id>", methods=["DELETE"])
     def delete_product(id):
         product = Product.query.get(id)
