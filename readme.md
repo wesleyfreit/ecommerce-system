@@ -21,7 +21,13 @@
  pip3 install -r .\requirements.txt  
  ```
 
- **4. Run the project:**
+ **4. Create database migrations**
+
+ ```bash
+ python src/_persist.py
+ ```
+
+ **5. Run the project:**
 
  ```bash
  python src/app.py  
