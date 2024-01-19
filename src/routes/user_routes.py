@@ -1,4 +1,5 @@
 from controllers.user_controller import UserController
+from flask_login import login_required
 
 
 def user_routes(app):
@@ -11,3 +12,8 @@ def user_routes(app):
     @app.route("/api/signin", methods=["POST"])
     def signin():
         return user_controller.login()
+
+    @app.route("/api/signout", methods=["POST"])
+    @login_required
+    def signout():
+        return user_controller.logout()

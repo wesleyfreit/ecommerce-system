@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from db.instance import db
 from models.user_model import User
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 
 class UserController:
@@ -34,6 +34,10 @@ class UserController:
                 login_user(user)
                 return jsonify({"info": "User logged in"})
         return jsonify({"error": "Invalid credentials"}), 401
+
+    def logout(self):
+        logout_user()
+        return jsonify({"info": "User logged out"})
 
     def find(self, id):
         user = User.query.get(id)
