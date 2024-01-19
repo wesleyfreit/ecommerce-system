@@ -7,4 +7,3 @@ def user_routes(app):
     @app.route("/api/signup", methods=["POST"])
     def signup():
         return user_controller.create()
-

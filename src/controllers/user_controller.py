@@ -9,6 +9,11 @@ class UserController:
         data = request.json
 
         if "username" in data and "password" in data:
+            user = User.query.filter_by(username=data["username"]).first()
+
+            if user:
+                return jsonify({"error": "User already exists"}), 400
+
             user = User(
                 username=data["username"],
                 password=data["password"],
@@ -16,6 +21,5 @@ class UserController:
 
             db.session.add(user)
             db.session.commit()
-            return jsonify({"id": user.id}), 201
-        return jsonify({"error": "Invalid product data"}), 400
-
+            return jsonify({"info": "User created"}), 201
+        return jsonify({"error": "Invalid user data"}), 400
