@@ -55,21 +55,19 @@ class UserController:
         user = User.query.get(current_user.id)
         items_purchased = [item.product_id for item in user.items_purchased]
 
-        if items_purchased:
-            products = Product.query.all()
+        products = Product.query.all()
 
-            items = [
-                product.serialize()
-                for product in products
-                if product.id in items_purchased
-            ]
+        items = [
+            product.serialize()
+            for product in products
+            if product.id in items_purchased
+        ]
 
-            return jsonify({
-                "user": {
-                    "id": user.id,
-                    "username": user.username,
-                    "created_at": user.created_at,
-                    "items_purchased": items
-                }
-            })
-        return jsonify({"items_purchased": []})
+        return jsonify({
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "created_at": user.created_at,
+                "items_purchased": items if items else [],
+            }
+        })
