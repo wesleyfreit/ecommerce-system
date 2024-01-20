@@ -3,6 +3,7 @@ from flask_login import current_user
 
 from db.instance import db
 from models.cart_items_model import CartItems
+from models.user_products_model import UserProducts
 from models.product_model import Product
 from models.user_model import User
 
@@ -56,6 +57,11 @@ class CartItemsController:
         cart_items = user.cart_items
 
         for item in cart_items:
+            purchase_product = UserProducts(
+                user_id=item.user_id,
+                product_id=item.product_id
+            )
+            db.session.add(purchase_product)
             db.session.delete(item)
         db.session.commit()
 

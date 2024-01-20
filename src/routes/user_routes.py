@@ -17,3 +17,8 @@ def user_routes(app):
     @login_required
     def signout():
         return user_controller.logout()
+
+    @app.route("/api/users/account", methods=["GET"])
+    @login_required
+    def purchased_items():
+        return user_controller.get()

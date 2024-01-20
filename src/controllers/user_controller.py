@@ -1,8 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user
+from flask_login import current_user, login_user, logout_user
 from flask import jsonify, request
 
 from db.instance import db
+from models.product_model import Product
 from models.user_model import User
 
 
@@ -49,3 +50,26 @@ class UserController:
     def find(self, id):
         user = User.query.get(id)
         return user
+
+    def get(self):
+        user = User.query.get(current_user.id)
+        items_purchased = [item.product_id for item in user.items_purchased]
+
+        if items_purchased:
+            products = Product.query.all()
+
+            items = [
+                product.serialize()
+                for product in products
+                if product.id in items_purchased
+            ]
+
+            return jsonify({
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "created_at": user.created_at,
+                    "items_purchased": items
+                }
+            })
+        return jsonify({"items_purchased": []})
