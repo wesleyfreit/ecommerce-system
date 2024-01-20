@@ -1,3 +1,4 @@
+from asyncio import constants
 from flask import jsonify
 from flask_login import current_user
 
@@ -10,14 +11,17 @@ from models.user_model import User
 class CartController:
     def get(self):
         user = User.query.get(current_user.id)
-        cart_items = user.cart
+        cart_items = [item.product_id for item in user.cart]
 
         if cart_items:
+            products = Product.query.all()
+
             items = [
-                Product.query.get(
-                    item.product_id
-                ).serialize() for item in cart_items
+                product.serialize()
+                for product in products
+                if product.id in cart_items
             ]
+
             return jsonify({"cart_items": items})
         return jsonify({"cart_items": []})
 
@@ -37,7 +41,8 @@ class CartController:
     def delete(self, id):
         user_id = current_user.id
         cart_item = Cart.query.filter_by(
-            user_id=user_id, product_id=id
+            user_id=user_id,
+            product_id=id
         ).first()
 
         if cart_item:
