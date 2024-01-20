@@ -18,7 +18,7 @@ py -m venv .venv
 **3. Install the project dependencies:**
 
 ```bash
-pip3 install -r .\requirements.txt  
+pip3 install -r requirements.txt  
 ```
 
 **4. Persist models in the database:**

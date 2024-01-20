@@ -6,7 +6,7 @@ from db.instance import db
 from config.constants import DATABASE_URL, SECRET_KEY
 
 from middlewares.login_required import login_required
-from routes.cart_routes import cart_routes
+from routes.cart_items_routes import cart_items_routes
 from routes.product_routes import product_routes
 from routes.user_routes import user_routes
 
@@ -24,7 +24,7 @@ CORS(app)
 
 product_routes(app)
 user_routes(app)
-cart_routes(app)
+cart_items_routes(app)
 
 if __name__ == "__main__":
     app.run(debug=True)
