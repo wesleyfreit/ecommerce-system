@@ -5,24 +5,10 @@ from models.product_model import Product
 
 class ProductController:
     def get(self):
-        products = Product.query.all()
+        products = [product.serialize() for product in Product.query.all()]
 
         if products:
-            return jsonify({
-                "products": [
-                    {
-                        "id": product.id,
-                        "name": product.name,
-                        "price": product.price,
-                        **(
-                            {"description": product.description}
-                            if product.description
-                            else {}
-                        ),
-                    }
-                    for product in products
-                ]
-                })
+            return jsonify({"products": products})
         return jsonify({"products": []})
 
     def add(self):
@@ -41,21 +27,10 @@ class ProductController:
         return jsonify({"error": "Invalid product data"}), 400
 
     def find(self, id):
-        product = Product.query.get(id)
+        product = Product.query.get(id).serialize()
 
         if product:
-            return jsonify({
-                "product": {
-                    "id": product.id,
-                    "name": product.name,
-                    "price": product.price,
-                    **(
-                        {"description": product.description}
-                        if product.description
-                        else {}
-                    ),
-                }
-            })
+            return jsonify({"product": product})
         return jsonify({"error": "Product not found"}), 404
 
     def update(self, id):
