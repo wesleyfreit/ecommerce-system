@@ -33,6 +33,18 @@ class ProductController:
             return jsonify({"product": product})
         return jsonify({"error": "Product not found"}), 404
 
+    def search(self, text_search):
+        products = [
+            product.serialize()
+            for product in Product.query.filter(
+                Product.name.ilike(f"%{text_search}%")
+            ).all()
+        ]
+
+        if products:
+            return jsonify({"products": products})
+        return jsonify({"products": []})
+
     def update(self, id):
         product = Product.query.get(id)
 
