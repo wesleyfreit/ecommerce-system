@@ -17,7 +17,7 @@ class CartItemsController:
             products = Product.query.all()
 
             items = [
-                product.serialize()
+                product.serialize(False)
                 for product in products
                 if product.id in cart_items
             ]
@@ -49,12 +49,16 @@ class CartItemsController:
             db.session.delete(cart_item)
             db.session.commit()
 
-            return jsonify({"info": "Item removed from cart"}), 200
+            return jsonify(), 204
         return jsonify({"error": "Item not found"}), 404
 
     def buy(self):
         user = User.query.get(current_user.id)
         cart_items = user.cart_items
+
+        print(cart_items)
+        if not cart_items:
+            return jsonify({"error": "Cart is empty"}), 400
 
         for item in cart_items:
             purchase_product = UserProducts(
@@ -65,4 +69,14 @@ class CartItemsController:
             db.session.delete(item)
         db.session.commit()
 
-        return jsonify({"info": "Cart purchased successfully"})
+        return jsonify({"info": "Cart purchased successfully"}), 201
+
+    def clean(self):
+        user = User.query.get(current_user.id)
+        cart_items = user.cart_items
+
+        for item in cart_items:
+            db.session.delete(item)
+        db.session.commit()
+
+        return jsonify(), 204

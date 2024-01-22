@@ -15,7 +15,7 @@ class UserController:
             user = User.query.filter_by(username=data["username"]).first()
 
             if user:
-                return jsonify({"error": "User already exists"}), 400
+                return jsonify({"error": "User already exists"}), 409
 
             password_hash = generate_password_hash(data["password"])
 
@@ -40,16 +40,14 @@ class UserController:
 
             if check_password_hash(password_hash, password):
                 login_user(user)
-                return jsonify({"info": "User logged in"})
+                return jsonify(
+                    {"info": "User logged in, a session cookie has been set"}
+                )
         return jsonify({"error": "Invalid credentials"}), 401
 
     def logout(self):
         logout_user()
         return jsonify({"info": "User logged out"})
-
-    def find(self, id):
-        user = User.query.get(id)
-        return user
 
     def get(self):
         user = User.query.get(current_user.id)
@@ -58,7 +56,7 @@ class UserController:
         products = Product.query.all()
 
         items = [
-            product.serialize()
+            product.serialize(False)
             for product in products
             if product.id in items_purchased
         ]
