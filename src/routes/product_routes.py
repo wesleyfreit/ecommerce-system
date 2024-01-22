@@ -1,8 +1,8 @@
 from flask import request
 from controllers.product_controller import ProductController
-from flask_login import login_required
 
 from middlewares.admin_required import admin_required
+from middlewares.login_required import login_required
 
 
 def product_routes(app):

@@ -1,5 +1,5 @@
 from controllers.cart_items_controller import CartItemsController
-from flask_login import login_required
+from middlewares.login_required import login_required
 
 
 def cart_items_routes(app):

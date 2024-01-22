@@ -1,5 +1,5 @@
 from controllers.user_controller import UserController
-from flask_login import login_required
+from middlewares.login_required import login_required
 
 
 def user_routes(app):

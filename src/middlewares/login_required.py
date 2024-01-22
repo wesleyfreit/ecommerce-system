@@ -1,12 +1,13 @@
-from controllers.user_controller import UserController
+from functools import wraps
+from flask import jsonify
+from flask_login import current_user
 
 
-def login_required(login_manager, app):
-    user_controller = UserController()
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return jsonify({"error": "Unauthorized, user not logged in"}), 401
+        return f(*args, **kwargs)
 
-    login_manager.init_app(app)
-    login_manager.login_view = "api/signin"
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return user_controller.find(user_id)
+    return decorated_function

@@ -5,7 +5,9 @@ from models.product_model import Product
 
 class ProductController:
     def get(self):
-        products = [product.serialize() for product in Product.query.all()]
+        products = [
+            product.serialize(False) for product in Product.query.all()
+        ]
 
         if products:
             return jsonify({"products": products})
@@ -27,15 +29,15 @@ class ProductController:
         return jsonify({"error": "Invalid product data"}), 400
 
     def find(self, id):
-        product = Product.query.get(id).serialize()
+        product = Product.query.get(id)
 
         if product:
-            return jsonify({"product": product})
+            return jsonify({"product": product.serialize(True)})
         return jsonify({"error": "Product not found"}), 404
 
     def search(self, text_search):
         products = [
-            product.serialize()
+            product.serialize(False)
             for product in Product.query.filter(
                 Product.name.ilike(f"%{text_search}%")
             ).all()
