@@ -1,4 +1,3 @@
-from controllers.user_controller import UserController
 from models.user_model import User
 
 

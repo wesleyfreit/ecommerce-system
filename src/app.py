@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_login import LoginManager
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -23,7 +23,7 @@ login_loader(login_manager, app)
 
 CORS(app)
 
-SWAGGER_URL = "/api/docs"
+SWAGGER_URL = "/docs"
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
     ["/static/swagger.json"],
@@ -35,9 +35,15 @@ app.register_blueprint(
     url_prefix=SWAGGER_URL,
 )
 
+
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify(), 200
+
+
 app.register_blueprint(cart_items_routes, url_prefix="/api")
 app.register_blueprint(product_routes, url_prefix="/api")
 app.register_blueprint(user_routes, url_prefix="/api")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

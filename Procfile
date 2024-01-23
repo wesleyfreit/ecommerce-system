@@ -1,0 +1,1 @@
+web: python src/_persist.py && python src/_migration.py && gunicorn --pythonpath src app:app
