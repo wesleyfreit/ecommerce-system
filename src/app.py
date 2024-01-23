@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_login import LoginManager
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from db.instance import db
 from config.constants import DATABASE_URL, SECRET_KEY
@@ -10,7 +11,7 @@ from routes.cart_items_routes import api as cart_items_routes
 from routes.product_routes import api as product_routes
 from routes.user_routes import api as user_routes
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../static")
 app.config["SECRET_KEY"] = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 
@@ -21,6 +22,18 @@ db.init_app(app)
 login_loader(login_manager, app)
 
 CORS(app)
+
+SWAGGER_URL = "/api/docs"
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    ["/static/swagger.json"],
+    config={"app_name": "Ecommerce System API"},
+)
+
+app.register_blueprint(
+    SWAGGERUI_BLUEPRINT,
+    url_prefix=SWAGGER_URL,
+)
 
 app.register_blueprint(cart_items_routes, url_prefix="/api")
 app.register_blueprint(product_routes, url_prefix="/api")
