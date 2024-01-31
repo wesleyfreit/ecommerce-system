@@ -8,7 +8,7 @@
 
 ## 🚀 Quick Start
 
-#### Requirements: Python3, PostgreeSQL
+**Requirements: Python3, PostgreeSQL**
 
 ---
 
@@ -87,7 +87,6 @@ eb create ecommerce-system-api
 
 **6. Now, on the ecommerce-system EB ambient page, set the project environment variables.**
 
----
 ### ➕ Extra
 
 **To update and redeploy the code, be sure to commit it and then run this:**
