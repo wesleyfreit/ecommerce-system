@@ -59,7 +59,7 @@ py src/app.py
 
 ## 🌐 Quick Start Deploy AWS EB
 
-#### Requirements: AWS Account, PG Serverless DB, AWS CLI, EB CLI
+**Requirements: AWS Account, PG Serverless DB, AWS CLI, EB CLI**
 
 ---
 
